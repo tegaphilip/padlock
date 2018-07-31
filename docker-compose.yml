@@ -1,0 +1,12 @@
+version: '3'
+services:
+  hocaboo_auth:
+    container_name: hocaboo_auth
+    build:
+      context: .
+    ports:
+      - '8091:80'
+    volumes:
+      - ./:/var/www/html/hocaboo-auth
+    environment:
+      DOCKER: 'true'

@@ -1,0 +1,11 @@
+class_name: ApiTester
+env:
+  testing:
+    modules:
+      enabled: [PhpBrowser, REST, Db, Asserts]
+      config:
+        PhpBrowser:
+          url: '%API_TEST_URL%/api'
+        REST:
+          depends: PhpBrowser
+          url: '%API_TEST_URL%/api'
