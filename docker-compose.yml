@@ -1,12 +1,28 @@
 version: '3'
 services:
-  hocaboo_auth:
-    container_name: hocaboo_auth
+  app:
+    container_name: padlock_app
     build:
       context: .
     ports:
-      - '8091:80'
+      - '8899:80'
     volumes:
-      - ./:/var/www/html/hocaboo-auth
+      - ./:/var/www/html/padlock
     environment:
       DOCKER: 'true'
+    depends_on:
+      - mysql
+
+  mysql:
+    container_name: padlock_mysql
+    image: mysql:5.7
+    ports:
+      - "33066:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root'
+      DOCKER: 'true'
+    volumes:
+      - db_volume:/var/lib/mysql
+
+volumes:
+  db_volume:

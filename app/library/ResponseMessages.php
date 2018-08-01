@@ -13,9 +13,6 @@ class ResponseMessages
         ResponseCodes::METHOD_NOT_IMPLEMENTED => 'method not implemented',
         ResponseCodes::INTERNAL_SERVER_ERROR => 'an internal server error occurred',
         ResponseCodes::UNEXPECTED_ERROR => 'an unexpected error occurred',
-        ResponseCodes::AUTH_ACCESS_TOKEN_REQUIRED => 'access_token is required',
-        ResponseCodes::RECORD_NOT_FOUND => 'record not found',
-        ResponseCodes::INVALID_PARAMETERS => 'some parameters were not supplied in the request',
     ];
 
     /**

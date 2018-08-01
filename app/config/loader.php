@@ -14,7 +14,7 @@ $loader->registerDirs([
 
 $loader->registerNamespaces([
     'App\Models' => $config->application->modelsDir,
-    'App\Controller' => $config->application->controllersDir,
+    'App\Controllers' => $config->application->controllersDir,
     'App\Library' => $config->application->libsDir,
     'App\CInterface' => $config->application->interfacesDir,
     'App\Repositories' => $config->application->repositoriesDir,

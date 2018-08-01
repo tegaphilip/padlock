@@ -13,12 +13,7 @@
 >
     <testsuites>
         <testsuite name="Passport Test Suite">
-            <directory suffix=".php">./tests/</directory>
+            <directory suffix=".php">./tests/repositories</directory>
         </testsuite>
     </testsuites>
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./app/</directory>
-        </whitelist>
-    </filter>
 </phpunit>

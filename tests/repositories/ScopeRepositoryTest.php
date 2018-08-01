@@ -6,6 +6,7 @@
  * Time: 16:02
  */
 
+use App\Models\Scope;
 use App\Repositories\ScopeRepository;
 use PHPUnit\Framework\TestCase;
 
@@ -35,11 +36,5 @@ class ScopeRepositoryTest extends TestCase
             'League\OAuth2\Server\Entities\ScopeEntityInterface',
             $this->repository->getScopeEntityByIdentifier('profile')
         );
-    }
-
-    public function testFinalizeScopes()
-    {
-        //invalid scopes are removed
-        $this->repository->finalizeScopes()
     }
 }

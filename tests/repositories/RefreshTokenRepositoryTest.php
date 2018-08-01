@@ -99,12 +99,7 @@ class RefreshTokenRepositoryTest extends TestCase
         $token->setClientId($this->client->getIdentifier());
         $token->setExpiryDateTime(Carbon::now());
         $token->setAccessToken($accessToken);
-        try {
-            $token->setIdentifier(base64_encode(random_bytes(40)));
-        } catch (Exception $exception) {
-            $this->fail($exception->getMessage());
-        }
-
+        $token->setIdentifier(bin2hex(openssl_random_pseudo_bytes(25, $strong)));
         return $token;
     }
 }

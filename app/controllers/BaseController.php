@@ -1,5 +1,5 @@
 <?php
-namespace App\Controller;
+namespace App\Controllers;
 
 use App\Library\Response;
 use Phalcon\Mvc\Controller;
@@ -7,7 +7,7 @@ use Phalcon\Mvc\Controller;
 /**
  * Class BaseController
  * @author Adeyemi Olaoye <yemi@cottacush.com>
- * @package App\Controller
+ * @package App\Controllers
  * @property Response $response
  */
 class BaseController extends Controller

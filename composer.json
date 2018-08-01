@@ -1,6 +1,6 @@
 {
-  "name": "Padlock, Hocaboo Auth",
-  "description": "Phalcon Padlock provides OAuth2 support for Phalcon Apps",
+  "name": "Padlock, A phalcon Authentication Server",
+  "description": "Padlock provides OAuth2 support for Phalcon Apps",
   "keywords": ["phalcon", "padlock", "oauth", "OAuth2"],
   "license": "MIT",
   "authors": [
@@ -18,7 +18,8 @@
   "require-dev": {
     "codeception/codeception": "2.3.9",
     "phpunit/phpunit": "^6.5",
-    "mockery/mockery": "^1.1"
+    "mockery/mockery": "^1.1",
+    "flow/jsonpath": "^0.4.0"
   },
   "minimum-stability": "dev",
   "prefer-stable": true

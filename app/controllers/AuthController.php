@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controllers;
 
 use App\Library\HttpStatusCodes;
 use App\Library\ResponseCodes;
 use App\Library\Utils;
-use App\Model\User;
+use App\Models\User;
 use App\Repositories\AccessTokenRepository;
 use GuzzleHttp\Psr7\ServerRequest;
 use League\OAuth2\Server\AuthorizationValidators\BearerTokenValidator;
@@ -15,7 +15,7 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 /**
  * Class AuthController
  * @property \League\OAuth2\Server\AuthorizationServer oauth2Server injected into DI
- * @package App\Controller
+ * @package App\Controllers
  */
 class AuthController extends BaseController
 {
@@ -109,11 +109,9 @@ class AuthController extends BaseController
         $bearerTokenValidator->setPublicKey(new CryptKey(getenv('PUBLIC_KEY_PATH'), null, false));
 
         try {
-            $a = $bearerTokenValidator->validateAuthorization(ServerRequest::fromGlobals());
+            $bearerTokenValidator->validateAuthorization(ServerRequest::fromGlobals());
 
-            return $this->response->sendSuccess([
-                'scopes' => array_column($this->objectToArray($a->getAttribute('oauth_scopes')), 'scope')
-            ]);
+            return $this->response->sendSuccess([]);
         } catch (OAuthServerException $exception) {
             return $this->sendResponseFromException($exception);
         } catch (\Exception $exception) {

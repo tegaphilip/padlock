@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-docker exec -it hocaboo_auth bash
+docker exec -it padlock_app bash

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controllers;
 
 use Phalcon\Config;
 
 /**
  * Class VersionController
  * @property Config config
- * @package App\Controller
+ * @package App\Controllers
  */
 class VersionController extends BaseController
 {

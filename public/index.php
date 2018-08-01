@@ -1,9 +1,6 @@
 <?php
 date_default_timezone_set('UTC');
 
-define('BASE_PATH', dirname(__DIR__));
-define('APP_PATH', BASE_PATH . '/app');
-
 use App\Library\HttpStatusCodes;
 use App\Library\ResponseCodes;
 use App\Library\ResponseMessages;
@@ -11,9 +8,9 @@ use Phalcon\Mvc\Micro;
 
 error_reporting(E_ALL);
 
-//include Composer Auto Loader
 include __DIR__ . "/../vendor/autoload.php";
 
+// we do not want to use .env files on production
 if (getenv('APPLICATION_ENV') !== 'production') {
     $envFile = ((getenv('APPLICATION_ENV') === 'testing') ? '.env.test' : '.env');
     $dotEnv = new Dotenv\Dotenv(dirname(__DIR__) . DIRECTORY_SEPARATOR . 'app/env', $envFile);
@@ -69,7 +66,7 @@ $app->notFound(function () use ($app) {
     $app->response->send();
 });
 
-$app->error(function ($exception) use ($app) {
+$app->error(function (Exception $exception) use ($app) {
     $app->response->setContentType('application/json');
     $app->response->setStatusCode(500, HttpStatusCodes::getMessage(500))->sendHeaders();
     $app->response->setJsonContent([

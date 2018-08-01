@@ -3,13 +3,11 @@
 namespace App\Library;
 
 use App\CInterface\JSend;
-use Phalcon\Di;
 use Phalcon\Http\Response as PhalconResponse;
 
 /**
  * Class Response
  * @author Adeyemi Olaoye <yemi@cottacush.com>
- * @author Olawale Lawal <wale@cottacush.com>
  */
 class Response extends PhalconResponse implements JSend
 {

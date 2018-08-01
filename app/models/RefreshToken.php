@@ -25,6 +25,10 @@ class RefreshToken extends BaseModel implements RefreshTokenEntityInterface
         $this->setSource('oauth_refresh_tokens');
     }
 
+    /**
+     * @param $clientId
+     * @return $this
+     */
     public function setClientId($clientId)
     {
         $this->client_id = $clientId;

@@ -95,12 +95,7 @@ class AuthCodeRepositoryTest extends TestCase
 
         $code->setClient($this->client);
         $code->setExpiryDateTime(Carbon::now());
-        try {
-            $code->setIdentifier(base64_encode(random_bytes(80)));
-        } catch (Exception $e) {
-            $this->fail($e->getMessage());
-        }
-
+        $code->setIdentifier(bin2hex(openssl_random_pseudo_bytes(25, $strong)));
         return $code;
     }
 }

@@ -1,94 +1,140 @@
-ELECTION APP
-===========
-Election App
+# Padlock, Phalcon Authentication Server
 
-Features
---------
-* ...
+[![Latest Version on Packagist][ico-version]][link-packagist]
+[![Software License][ico-license]](LICENSE.md)
+[![Total Downloads][ico-downloads]][link-downloads]
 
+Padlock is a docker-based phalcon authentication server built on top of the [PHP OAuth 2.0 Server](https://github.com/thephpleague/oauth2-server) 
 
-Contributors
+Setting Up
 ------------
-* Tega Oghenekohwo <tega.philip@gmail.com>
-
-
-Requirements
-------------
-* [Phalcon 3.3](https://docs.phalconphp.com/en/latest/reference/install.html)
-* [Composer](https://getcomposer.org/doc/00-intro.md#using-composer)
-
-
-Installation
-------------
-
-Setup Environment Variables
----------------------------
-Make a copy of .env.sample to .env in the env directory and replace the values.
-
-
-Set Up Using Docker
--------------------------------
-
-* `php vendor/bin/phinx migrate`
+* Add the entries `padlock.local` and `padlock-test.local` and map to `127.0.0.1` in your `/etc/hosts` file
 
 * Ensure you have docker installed
 
-* Create a clone of the `.env.testing.sample` file and name it `.env` and replace the values of the variables
+* Make a copy of `.env.sample` to `.env` in the `app/env/` directory and replace the values.
 
-* Login to mysql using the credentials host:127.0.0.1, username: root, password:root, port: 32800
+* You can generate the `ENCRYPTION_KEY` environment variable by running 
+`php -r "echo base64_encode(random_bytes(40)) . PHP_EOL;"` on the command line
 
-* Create two databases: `election_app` and `election_app_test`
+* cd into the `keys` directory and generate your public and private keys like so: `openssl genrsa -out private.key 2048` 
+then  `openssl rsa -in private.key -pubout -out public.key`. These are needed for encrypting and decrypting tokens
 
-* Run migrations `php vendor/bin/phinx migrate`
+* Feel free to change the port mappings in `docker-compose.yml` if you already have services running on ports `8899` for
+the phalcon app and `33066` for the mysql server
 
-Run the following to import states, etc from Excel File (If any of the scripts fail, try without the underscore)
+* Run the app like this `./bin/start.sh` or run `docker-compose up -d`
 
-* `DB_HOST=mysql DB_USER=root DB_PASSWORD=root DB_NAME=election_app php app/cli.php states_import import`
-* `DB_HOST=mysql DB_USER=root DB_PASSWORD=root DB_NAME=election_app php app/cli.php lgas_import import`
-* `DB_HOST=mysql DB_USER=root DB_PASSWORD=root DB_NAME=election_app php app/cli.php wards_import import`
-* `DB_HOST=mysql DB_USER=root DB_PASSWORD=root DB_NAME=election_app php app/cli.php stations_import import`
-* `DB_HOST=mysql DB_USER=root DB_PASSWORD=root DB_NAME=election_app php app/cli.php inec_lgas_import import`
-* `DB_HOST=mysql DB_USER=root DB_PASSWORD=root DB_NAME=election_app php app/cli.php inec_wards_import import`
-* `DB_HOST=mysql DB_USER=root DB_PASSWORD=root DB_NAME=election_app php app/cli.php inec_stations_import import`
+* Login to mysql using the credentials host:127.0.0.1, username: root, password:root, port: 33066
+
+* Create two databases: `padlock_db` and `padlock_test_db` and import the sql file found in `app/db/padlock.sql` into 
+both databases
+
+Try it out
+==========
+
+Requesting a Token
+------------------
+
+1. Password Grant Flow: Send a `POST` request to `http://padlock.local/api/v1/oauth/token` with the following parameters:
+    - client_id: test
+    - client_secret: secret
+    - grant_type: password
+    - username: abc
+    - password: abc
+    
+    NOTE: This grant returns an access token and a refresh token
+    
+2. Client Credentials Grant Flow: Send a `POST` request to `http://padlock.local/api/v1/oauth/token` with the following parameters:
+    - client_id: test
+    - client_secret: secret
+    - grant_type: client_credentials
+    
+    NOTE: This grant returns only an access token
+
+3. Refresh Token Grant: Send a `POST` request to `http://padlock.local/api/v1/oauth/token` with the following parameters:
+    - client_id: test
+    - client_secret: secret
+    - grant_type: refresh_token
+    - refresh_token: value gotten from any flow that returns a refresh token (e.g password grant flow)
+    
+    NOTE: This grant returns another access token and refresh token and invalidates/revokes the previous ones
+    
+4. Implicit Grant: Send a `GET` request to `http://padlock.local/api/v1/oauth/authorize` with the following parameters:
+    - client_id: test
+    - response_type: token
+    - state: a random string (optional)
+    - redirect_uri: http://www.test.com (optional)
+    
+    NOTE: This grant returns an access token immediately. It does not return a refresh token. 
+    
+5. Authorization Code Grant: Send a `GET` request to `http://padlock.local/api/v1/oauth/authorize` with the following parameters:
+    - client_id: test
+    - response_type: code
+    - state: a random string (optional)
+    - redirect_uri: http://www.test.com (optional)
+    
+    NOTE: This grant returns an authorization code that is then used to request for a token by sending a `POST`
+    request to the endpoint `http://padlock.local/api/v1/oauth/token` with the following parameters:
+    - client_id: test
+    - client_secret: secret
+    - grant_type: authorization_code
+    - code: value gotten from the get request
+    - redirect_uri: http://www.test.com (optional)
+    
+Validating a Token
+------------------
+Send a `POST` request to `http://padlock.local/api/v1/oauth/token/validate` with an `Authorization` header whose value is
+`Bearer {access_token}`
+  
 
 Running Tests
 -------------
 
-Create a clone of the `.env.testing.sample` file and name it `.env.testing` and replace the values of the variables
+* Make a copy of `.env.sample` to `.env.test` in the `app/env/` directory and replace the values.
 
-* Create a test database `election_app_test`
+* Login to the app container using `./bin/login.sh` or run `docker exec -it padlock_app bash`
 
-* Execute tests using  `./runtest.sh` to run all tests or `./runtest.sh {testName}` to run a particular test. E.g `./runtest.sh UserCest`
+* Execute unit tests  `./unit-test.sh` (uses [PHPUnit](https://phpunit.de/))
 
-php vendor/bin/phinx create StateMigration
+* Run integration tests using `./integration-test.sh` (uses [Codeception](https://codeception.com/)) 
 
-Deploying on Staging
---------------------
-* sudo apt-get update
-* Install apache with `sudo apt-get install apache2`
-* Get phalcon repository with `curl -s https://packagecloud.io/install/repositories/phalcon/stable/script.deb.sh | sudo bash`
-* Install phalcon with `sudo apt-get install php7.0-phalcon`
-* Check Phalcon Version with `php -r "echo Phalcon\Version::get();"`
-* sudo apt-get install php7.0-mbstring
-* sudo apt-get install php7.0-curl
-* sudo apt-get install php7.0-xml
-* sudo apt-get install php7.0-mysql
-* sudo apt-get install php7.1-phalcon
-* https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04
-* https://www.digitalocean.com/community/tutorials/how-to-install-linux-nginx-mysql-php-lemp-stack-in-ubuntu-16-04
-* extensions /usr/lib/php/20160303
-* INI APACHE cat /etc/php/7.1/apache2/php.ini
-* ADDITIONAL INI APACHE ls -al /etc/php/7.1/apache2/conf.d
-* INI CLI cat /etc/php/7.1/cli/php.ini
-* ADDITIONAL INI CLI ls -al /etc/php/7.1/cli/conf.d
-* sudo find  / -iname 'phalcon.so' -exec rm -f {} \; // remove
-* sudo find  / -iname 'phalcon.so'
+## Install
 
-sudo apt-get install -y php7.1 libapache2-mod-php7.1 php7.1-cli php7.1-common php7.1-mbstring php7.1-gd php7.1-intl php7.1-xml php7.1-mysql php7.1-mcrypt php7.1-zip
-sudo apt-get install -y php7.1-curl
+Via Composer
 
-* For some reason addExistence Validation causes things to fail on staging server (AWS, DO, etc)
+``` bash
+$ composer require tegaphilip/padlock
+```
 
-* Run import tasks
+## Change log
+
+Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
+
+
+## Contributing
+
+Please see [CONTRIBUTING](CONTRIBUTING.md) and [CONDUCT](CONDUCT.md) for details.
+
+## Security
+
+If you discover any security related issues, please email <developers@cottacush.com> instead of using the issue tracker.
+
+## Credits
+
+- [Tega Oghenekohwo](https://github.com/tegaphilip)
+- [Adeyemi Olaoye](https://github.com/yemexx1)
+- [All Contributors][link-contributors]
+
+
+[ico-version]: https://img.shields.io/packagist/v/tegaphilip/padlock.svg?style=flat-square
+[ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
+[ico-downloads]: https://img.shields.io/packagist/dt/tegaphilip/padlock.svg?style=flat-square
+
+[link-packagist]: https://packagist.org/packages/tegaphilip/padlock
+[link-code-quality]: https://scrutinizer-ci.com/g/tegaphilip/padlock
+[link-downloads]: https://packagist.org/packages/tegaphilip/padlock
+[link-contributors]: ../../contributors
+
 
 

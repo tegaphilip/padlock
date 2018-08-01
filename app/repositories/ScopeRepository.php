@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Client;
 use App\Models\Scope;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
@@ -52,16 +53,22 @@ class ScopeRepository extends Repository implements ScopeRepositoryInterface
         $userIdentifier = null
     ) {
         //we will ignore $userIdentifier as we do not plan to give user based scopes but client based scopes only
+        // the implementation of this part should totally depend on whoever uses this library
+        // no need to remove invalid scopes (scopes that do not exist in the database)
+        // because they will be validated by the league library
 
-        $clientScope = $clientEntity->scope;
+        /** @var Client $client */
+        $client = (new ClientRepository())->findOne(['client_id' => $clientEntity->getIdentifier()]);
+        $clientScopes = empty($clientScope) ? null : $client->scope;
 
-        //if scope was not saved for client or * was saved , ignore and return all scopes
-        if (empty($clientScope) || $clientScope === '*') {
+        //if scope was not saved for client or * was saved, ignore and return all scopes
+        if (empty($clientScopes) || $clientScopes === '*') {
             //grant all scopes
             return $scopes;
         }
 
-        $clientScopes = array_map('trim', explode(SCOPE_DELIMITER_STRING, $clientScope));
+        //scopes of client from database
+        $clientScopes = array_map('trim', explode(SCOPE_DELIMITER_STRING, $clientScopes));
 
         //remove any scope requested but not associated to client
         $result = [];

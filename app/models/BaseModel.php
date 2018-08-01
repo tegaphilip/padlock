@@ -7,7 +7,6 @@ use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Di;
 use Phalcon\Http\Request;
 use Phalcon\Mvc\Model;
-use Phalcon\Mvc\Model\EagerLoadingTrait;
 use Phalcon\Mvc\Model\MetaData\Memory;
 
 /**
@@ -19,7 +18,6 @@ use Phalcon\Mvc\Model\MetaData\Memory;
  */
 class BaseModel extends Model
 {
-//    use EagerLoadingTrait;
     use Utils;
 
     private static $lastErrorMessage;
@@ -81,25 +79,6 @@ class BaseModel extends Model
                 $model->{$key} = $value;
             }
         }
-    }
-
-    /**
-     * @author Adeyemi Olaoye <yemi@cottacush.com>
-     * @return mixed
-     */
-    public static function getLastErrorMessage()
-    {
-        return self::$lastErrorMessage;
-    }
-
-    /**
-     * @return Request
-     */
-    public static function getRequest()
-    {
-        /** @var Request $request */
-        $request = Di::getDefault()->get('request');
-        return $request;
     }
 
     /**

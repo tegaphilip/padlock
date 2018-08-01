@@ -64,7 +64,7 @@ $di->setShared('security', function () {
 /**
  * Add config
  */
-$di->set('config', $config);
+$di->setShared('config', $config);
 
 /**
  * Response Handler

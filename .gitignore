@@ -1,13 +1,10 @@
 .idea/
 vendor/
 app/logs/*.log
-db/sql/data.txt
-db/sql/out.txt
 public/requests.log
 tests/_output/
 .DS_Store
-deploy/servers.yml
-tests/_support/_generated/ApiTesterActions.php
 app/env/.env
 app/env/.env.test
-app/env/.env.staging
+keys/public.key
+keys/private.key
