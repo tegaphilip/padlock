@@ -1,6 +1,6 @@
 {
-  "name": "Padlock, A phalcon Authentication Server",
-  "description": "Padlock provides OAuth2 support for Phalcon Apps",
+  "name": "tegaphilip/padlock",
+  "description": "Padlock, A phalcon Authentication Server provides OAuth2 support for Phalcon Apps",
   "keywords": ["phalcon", "padlock", "oauth", "OAuth2"],
   "license": "MIT",
   "authors": [
