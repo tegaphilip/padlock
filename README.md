@@ -36,7 +36,7 @@ Try it out
 Requesting a Token
 ------------------
 
-1. Password Grant Flow: Send a `POST` request to `http://padlock.local/api/v1/oauth/token` with the following parameters:
+1. Password Grant Flow: Send a `POST` request to `http://padlock.local:8899/api/v1/oauth/token` with the following parameters:
     - client_id: test
     - client_secret: secret
     - grant_type: password
@@ -45,14 +45,14 @@ Requesting a Token
     
     NOTE: This grant returns an access token and a refresh token
     
-2. Client Credentials Grant Flow: Send a `POST` request to `http://padlock.local/api/v1/oauth/token` with the following parameters:
+2. Client Credentials Grant Flow: Send a `POST` request to `http://padlock.local:8899/api/v1/oauth/token` with the following parameters:
     - client_id: test
     - client_secret: secret
     - grant_type: client_credentials
     
     NOTE: This grant returns only an access token
 
-3. Refresh Token Grant: Send a `POST` request to `http://padlock.local/api/v1/oauth/token` with the following parameters:
+3. Refresh Token Grant: Send a `POST` request to `http://padlock.local:8899/api/v1/oauth/token` with the following parameters:
     - client_id: test
     - client_secret: secret
     - grant_type: refresh_token
@@ -60,7 +60,7 @@ Requesting a Token
     
     NOTE: This grant returns another access token and refresh token and invalidates/revokes the previous ones
     
-4. Implicit Grant: Send a `GET` request to `http://padlock.local/api/v1/oauth/authorize` with the following parameters:
+4. Implicit Grant: Send a `GET` request to `http://padlock.local:8899/api/v1/oauth/authorize` with the following parameters:
     - client_id: test
     - response_type: token
     - state: a random string (optional)
@@ -68,14 +68,14 @@ Requesting a Token
     
     NOTE: This grant returns an access token immediately. It does not return a refresh token. 
     
-5. Authorization Code Grant: Send a `GET` request to `http://padlock.local/api/v1/oauth/authorize` with the following parameters:
+5. Authorization Code Grant: Send a `GET` request to `http://padlock.local:8899/api/v1/oauth/authorize` with the following parameters:
     - client_id: test
     - response_type: code
     - state: a random string (optional)
     - redirect_uri: http://www.test.com (optional)
     
     NOTE: This grant returns an authorization code that is then used to request for a token by sending a `POST`
-    request to the endpoint `http://padlock.local/api/v1/oauth/token` with the following parameters:
+    request to the endpoint `http://padlock.local:8899/api/v1/oauth/token` with the following parameters:
     - client_id: test
     - client_secret: secret
     - grant_type: authorization_code
@@ -84,7 +84,7 @@ Requesting a Token
     
 Validating a Token
 ------------------
-Send a `POST` request to `http://padlock.local/api/v1/oauth/token/validate` with an `Authorization` header whose value is
+Send a `POST` request to `http://padlock.local:8899/api/v1/oauth/token/validate` with an `Authorization` header whose value is
 `Bearer {access_token}`
   
 
