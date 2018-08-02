@@ -129,7 +129,7 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) and [CONDUCT](CONDUCT.md) for details
 
 [link-packagist]: https://packagist.org/packages/tegaphilip/padlock
 [link-code-quality]: https://scrutinizer-ci.com/g/tegaphilip/padlock
-[link-downloads]: https://packagist.org/packages/tegaphilip/padlock
+[link-downloads]: https://packagist.org/packages/tegaphilip/padlock/stats
 [link-contributors]: ../../contributors
 
 
