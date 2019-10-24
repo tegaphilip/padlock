@@ -24,5 +24,9 @@ COPY . /var/www/html/padlock/
 
 WORKDIR /var/www/html/padlock
 
+RUN chown www-data:www-data -R app/logs
+RUN chgrp www-data -R app/logs
+RUN chmod 777 -R app/logs
+
 #install composer dependencies
 RUN composer install
