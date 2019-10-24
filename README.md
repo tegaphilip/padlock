@@ -20,6 +20,9 @@ Setting Up
 * cd into the `keys` directory and generate your public and private keys like so: `openssl genrsa -out private.key 2048` 
 then  `openssl rsa -in private.key -pubout -out public.key`. These are needed for encrypting and decrypting tokens
 
+* You will need to change the permissions of the private and public keys you create in the previous step to the following:
+    ``` chgrp www-data -R keys ``` Then ``` chmod 600 keys/private.key ```
+
 * Feel free to change the port mappings in `docker-compose.yml` if you already have services running on ports `8899` for
 the phalcon app and `33066` for the mysql server
 
