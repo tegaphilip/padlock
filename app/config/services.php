@@ -86,7 +86,7 @@ $di->setShared('oauth2Server', function () use ($config) {
         $clientRepository,
         $accessTokenRepository,
         $scopeRepository,
-        new \League\OAuth2\Server\CryptKey(getenv('PRIVATE_KEY_PATH')),
+        new \League\OAuth2\Server\CryptKey(getenv('PRIVATE_KEY_PATH'), null, false),
         getenv('ENCRYPTION_KEY')
     );
 

@@ -8,3 +8,4 @@ app/env/.env
 app/env/.env.test
 keys/public.key
 keys/private.key
+nbproject
